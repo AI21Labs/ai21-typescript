@@ -44,13 +44,13 @@ The client supports streaming responses for real-time processing. Here are examp
 #### Using Async Iterator
 
 ```typescript
-const stream = await ai21.chat.completions.create({
+const streamResponse = await ai21.chat.completions.create({
   model: 'jamba-1.5-mini',
   messages: [{ role: 'user', content: 'Write a story about a space cat' }],
   stream: true,
 });
 
-for await (const chunk of stream) {
+for await (const chunk of streamResponse) {
   console.log(chunk.choices[0]?.delta?.content || '');
 }
 ```
