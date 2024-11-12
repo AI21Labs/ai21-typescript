@@ -5,7 +5,7 @@ import { AI21 } from "../AI21";
 */
 async function main() {
 
-    /* TODO - add a file upload example when library support is added and combined with the below flow */
+    /* TODO - add a file upload example when library support is added and combine it with the below flow */
 
   const client = new AI21({ apiKey: process.env.AI21_API_KEY });
   try {
