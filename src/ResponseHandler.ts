@@ -11,7 +11,7 @@ type APIResponse<T> = {
 export async function handleAPIResponse<T>({
   response,
   options,
-}: APIResponseProps): Promise<Stream<T> | APIResponse<T>> {
+}: APIResponseProps): Promise<Stream<T> | Promise<APIResponse<T>>> {
   if (options.stream) {
     if (!response.body) {
       throw new AI21Error('Response body is null');
@@ -20,10 +20,5 @@ export async function handleAPIResponse<T>({
   }
 
   const contentType = response.headers.get('content-type');
-  const data = contentType?.includes('application/json') ? await response.json() : null;
-
-  return {
-    data,
-    response,
-  };
+  return contentType?.includes('application/json') ? await response.json() : null;
 }
