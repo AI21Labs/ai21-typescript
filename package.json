@@ -1,6 +1,6 @@
 {
   "name": "ai21",
-  "version": "v1.0.0-rc.1",
+  "version": "0.0.0",
   "description": "AI21 TypeScript SDK",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
