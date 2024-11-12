@@ -10,14 +10,16 @@
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     ["@semantic-release/npm", {
-      "npmPublish": true
+      "npmPublish": true,
+      "tag": "next"
     }],
     ["@semantic-release/exec", {
       "prepareCmd": "node update-version.js ${nextRelease.version}"
     }],
     ["@semantic-release/git", {
       "assets": ["package.json", "src/version.ts"],
-      "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
+      "pushTo": ["origin ${branch.name}"]
     }],
     ["@semantic-release/github", {
       "labels": ["release-candidate"],
