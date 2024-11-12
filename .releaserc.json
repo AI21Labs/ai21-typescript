@@ -3,11 +3,7 @@
     {
       "name": "main"
     },
-    {
-      "name": "rc_*",
-     "channel": "next",
-      "prerelease": "rc"
-    }
+    { "name": "rc_*", "channel": "next", "type": "prerelease" }
   ],
   "plugins": [
     "@semantic-release/commit-analyzer",
