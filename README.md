@@ -76,4 +76,4 @@ If you encounter any issues or have suggestions for improvements, please feel fr
 
 ## License
 
-This library is licensed under the [MIT License](LICENSE).
+This library is licensed under the [Apache-2.0 License](LICENSE).
