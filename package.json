@@ -20,7 +20,8 @@
     "lint": "npx eslint 'src/**/*.{ts,tsx}' --no-ignore",
     "format": "prettier --write \"(src|test)/**\" --no-error-on-unmatched-pattern",
     "prepare": "npm run build",
-    "example": "npx tsx src/example.ts",
+    "chatExample": "npx tsx src/examples/chatExample.ts",
+    "convRagExample": "npx tsx src/examples/convRagExample.ts",
     "circular": "madge --circular --extensions ts src",
     "quality": "npm run circular && npm run lint && tsc --noEmit && npm run format && npm run unused-deps",
     "quality:fix": "npm run circular && npm run lint -- --fix && tsc --noEmit && npm run format"
