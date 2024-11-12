@@ -24,7 +24,7 @@ jobs:
 
       - name: Install semantic-release
         run: |
-          npm install --save-dev semantic-release @semantic-release/git @semantic-release/github
+          npm install --save-dev semantic-release @semantic-release/git @semantic-release/github @semantic-release/exec
         
       - name: Build package
         run: npm run build
