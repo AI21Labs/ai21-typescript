@@ -34,7 +34,7 @@ const response = await client.chat.completions.create({
   messages: [{ role: 'user', content: 'Hello, how are you? tell me a 100 line story about a cat named "Fluffy"' }],
 });
 
-console.log(response.data);
+console.log(response);
 ```
 
 ### Streaming Responses
@@ -62,7 +62,7 @@ The `AI21` class provides a `chat` property that gives you access to the Chat AP
 The `AI21` class accepts several configuration options, which you can pass in when creating a new instance:
 
 - `baseURL`: The base URL for the API endpoint (default: `https://api.ai21.com/studio/v1`)
-- `apiKey`: Your AI21 API key
+- `apiKey`: Your AI21 API Key
 - `maxRetries`: The maximum number of retries for failed requests (default: `3`)
 - `timeout`: The request timeout in seconds
 
