@@ -14,7 +14,7 @@
       "tag": "next"
     }],
     ["@semantic-release/exec", {
-      "prepareCmd": "node update-version.js ${nextRelease.version}"
+      "prepareCmd": "node ../../update-version.js ${nextRelease.version}"
     }],
     ["@semantic-release/git", {
       "assets": ["package.json", "src/version.ts"],
