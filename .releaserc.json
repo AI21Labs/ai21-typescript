@@ -3,7 +3,7 @@
     "main",
     {
       "name": "rc_*",
-      "prerelease": "rc"
+      "prerelease": true
     }
   ],
   "plugins": [
