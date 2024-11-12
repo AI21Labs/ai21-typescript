@@ -1,9 +1,9 @@
 {
   "branches": [
     {
-      "name": "main"
-    },
-    { "name": "rc_*", "channel": "next", "type": "prerelease" }
+      "name": "main",
+      "prerelease": "rc"
+    }
   ],
   "plugins": [
     "@semantic-release/commit-analyzer",
