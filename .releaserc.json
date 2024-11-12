@@ -1,8 +1,13 @@
 {
   "branches": [
-    "main",
+    {
+      "name": "main",
+    "channel": "latest",
+      "prerelease": false
+    },
     {
       "name": "rc_*",
+     "channel": "next",
       "prerelease": true
     }
   ],
