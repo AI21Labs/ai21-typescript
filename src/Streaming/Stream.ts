@@ -2,6 +2,7 @@ import { DefaultSSEDecoder } from './SSEDecoder';
 import { SSEDecoder } from './SSEDecoder';
 import { SSE_DONE_MSG } from './Consts';
 import { StreamingDecodeError } from '../errors';
+import { UnifiedResponse } from '../types';
 
 function getStreamMessage<T>(chunk: string): T {
   try {
@@ -16,7 +17,7 @@ export class Stream<T> implements AsyncIterableIterator<T> {
   private iterator: AsyncIterableIterator<T>;
 
   constructor(
-    private response: Response,
+    private response: UnifiedResponse,
     decoder?: SSEDecoder,
   ) {
     this.decoder = decoder || new DefaultSSEDecoder();
@@ -24,7 +25,7 @@ export class Stream<T> implements AsyncIterableIterator<T> {
   }
 
   private async *stream(): AsyncIterableIterator<T> {
-    for await (const chunk of this.decoder.iterLines(this.response)) {
+    for await (const chunk of this.decoder.iterLines(this.response as Response)) {
       if (chunk === SSE_DONE_MSG) break;
       yield getStreamMessage(chunk);
     }

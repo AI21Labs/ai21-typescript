@@ -1,7 +1,7 @@
 import { AI21Error } from './errors';
 import { VERSION } from './version';
 
-import { RequestOptions, FinalRequestOptions, APIResponseProps, HTTPMethod, Headers } from './types/index.js';
+import { RequestOptions, FinalRequestOptions, APIResponseProps, HTTPMethod, Headers, UnifiedResponse } from './types';
 import { AI21EnvConfig } from './EnvConfig';
 import { handleAPIResponse } from './ResponseHandler';
 import { createFetchInstance } from 'envFetch';
@@ -90,25 +90,19 @@ export abstract class APIClient {
   }
 
   private async performRequest(options: FinalRequestOptions): Promise<APIResponseProps> {
-    const controller = new AbortController();
     const url = `${this.baseURL}${options.path}`;
 
     const headers = {
       ...this.defaultHeaders(options),
       ...options.headers,
     };
-    const response = await this.fetch.call(url, {
-      method: options.method,
-      headers: headers as any,
-      signal: controller.signal,
-      body: options.body ? JSON.stringify(options.body) : undefined,
-    });
+    const response = await this.fetch.call(url, { ...options, headers });
 
     if (!response.ok) {
       throw new AI21Error(`Request failed with status ${response.status}. ${await response.text()}`);
     }
 
-    return { response, options, controller };
+    return { response: response as UnifiedResponse, options };
   }
 
   protected isRunningInBrowser(): boolean {

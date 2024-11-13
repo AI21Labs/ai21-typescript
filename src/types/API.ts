@@ -1,9 +1,9 @@
 export type HTTPMethod = 'get' | 'post' | 'put' | 'patch' | 'delete';
 
 export type APIResponseProps = {
-  response: Response;
+  response: UnifiedResponse;
   options: FinalRequestOptions;
-  controller: AbortController;
+  controller?: AbortController;
 };
 
 export type RequestOptions<
@@ -27,3 +27,4 @@ export type FinalRequestOptions = RequestOptions & {
 
 export type DefaultQuery = Record<string, unknown>;
 export type Headers = Record<string, string | null | undefined>;
+export type UnifiedResponse = Response | import('node-fetch').Response;
