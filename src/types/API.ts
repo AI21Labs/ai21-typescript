@@ -28,3 +28,4 @@ export type FinalRequestOptions = RequestOptions & {
 export type DefaultQuery = Record<string, unknown>;
 export type Headers = Record<string, string | null | undefined>;
 export type UnifiedResponse = Response | import('node-fetch').Response;
+export type UnifiedReadableStream = ReadableStream<Uint8Array> | import('stream/web').ReadableStream;

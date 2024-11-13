@@ -1,4 +1,4 @@
-import { DefaultSSEDecoder } from './SSEDecoder';
+import { BrowserSSEDecoder } from './SSEDecoder';
 import { SSEDecoder } from './SSEDecoder';
 import { SSE_DONE_MSG } from './Consts';
 import { StreamingDecodeError } from '../errors';
@@ -20,7 +20,7 @@ export class Stream<T> implements AsyncIterableIterator<T> {
     private response: UnifiedResponse,
     decoder?: SSEDecoder,
   ) {
-    this.decoder = decoder || new DefaultSSEDecoder();
+    this.decoder = decoder || new BrowserSSEDecoder();
     this.iterator = this.stream();
   }
 

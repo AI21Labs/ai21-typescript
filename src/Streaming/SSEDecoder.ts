@@ -1,13 +1,13 @@
 import { SSE_DATA_PREFIX } from './Consts';
 import { StreamingDecodeError } from '../errors';
-import { getReadableStream } from 'envFetch';
+import { UnifiedResponse } from 'types';
 
 export interface SSEDecoder {
   decode(line: string): string | null;
-  iterLines(response: Response): AsyncIterableIterator<string>;
+  iterLines(response: UnifiedResponse): AsyncIterableIterator<string>;
 }
 
-export class DefaultSSEDecoder implements SSEDecoder {
+abstract class BaseSSEDecoder implements SSEDecoder {
   decode(line: string): string | null {
     if (!line) return null;
 
@@ -18,38 +18,54 @@ export class DefaultSSEDecoder implements SSEDecoder {
     throw new StreamingDecodeError(`Invalid SSE line: ${line}`);
   }
 
-  async *iterLines(response: Response): AsyncIterableIterator<string> {
-    if (!response.body) {
-      throw new Error('Response body is null');
-    }
+  abstract iterLines(response: UnifiedResponse): AsyncIterableIterator<string>;
 
-    const reader = await getReadableStream(response.body);
-    let buffer = '';
-
-
-    try {
-      while (true) {
-        const { done, value } = await reader.read();
-
-        if (done) {
-          if (buffer.length > 0) {
-            const decoded = this.decode(buffer.trim());
+  async *_iterLines(reader: ReadableStreamDefaultReader<Uint8Array>): AsyncIterableIterator<string> {
+    
+      let buffer = '';
+  
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+  
+          if (done) {
+            if (buffer.length > 0) {
+              const decoded = this.decode(buffer.trim());
+              if (decoded) yield decoded;
+            }
+            break;
+          }
+  
+          buffer += new TextDecoder().decode(value);
+          const lines = buffer.split('\n');
+          buffer = lines.pop() || '';
+  
+          for (const line of lines) {
+            const decoded = this.decode(line.trim());
             if (decoded) yield decoded;
           }
-          break;
         }
-
-        buffer += new TextDecoder().decode(value);
-        const lines = buffer.split('\n');
-        buffer = lines.pop() || '';
-
-        for (const line of lines) {
-          const decoded = this.decode(line.trim());
-          if (decoded) yield decoded;
-        }
+      } finally {
+        reader.releaseLock();
       }
-    } finally {
-      reader.releaseLock();
-    }
   }
+}
+
+export class BrowserSSEDecoder extends BaseSSEDecoder {
+  async *iterLines(response: UnifiedResponse): AsyncIterableIterator<string> {
+    if (!response.body) {
+        throw new Error('Response body is null');
+    }
+
+    const body = response.body as ReadableStream<Uint8Array>;
+    yield* this._iterLines(body.getReader());
+  }
+}
+
+export class NodeSSEDecoder extends BaseSSEDecoder {
+    async *iterLines(response: UnifiedResponse): AsyncIterableIterator<string> {
+        const readerStream = (await import("stream/web")).ReadableStream as any;
+        const reader = readerStream.from(response.body).getReader();
+        yield* this._iterLines(reader);
+    }
 }

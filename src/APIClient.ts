@@ -85,7 +85,7 @@ export abstract class APIClient {
     };
 
     return this.performRequest(options as FinalRequestOptions).then(
-      (response) => handleAPIResponse<Rsp>(response) as Rsp,
+      (response) => this.fetch.handleResponse<Rsp>(response) as Rsp,
     );
   }
 
