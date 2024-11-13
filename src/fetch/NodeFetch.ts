@@ -1,7 +1,6 @@
 import { FinalRequestOptions, UnifiedResponse } from 'types';
 import { Fetch } from './BaseFetch';
-import { NodeSSEDecoder } from 'Streaming/SSEDecoder';
-import { Stream } from 'Streaming';
+import { Stream, NodeSSEDecoder } from '../Streaming';
 
 export class NodeFetch extends Fetch {
   async call(url: string, options: FinalRequestOptions): Promise<UnifiedResponse> {

@@ -10,7 +10,7 @@ import {
   UnifiedResponse,
 } from './types';
 import { AI21EnvConfig } from './EnvConfig';
-import { createFetchInstance } from 'envFetch';
+import { createFetchInstance } from './runtime';
 import { Fetch } from 'fetch';
 
 const validatePositiveInteger = (name: string, n: unknown): number => {

@@ -1,7 +1,6 @@
 import { FinalRequestOptions, UnifiedResponse } from 'types';
 import { Fetch } from './BaseFetch';
-import { Stream } from 'Streaming';
-import { BrowserSSEDecoder } from 'Streaming/SSEDecoder';
+import { Stream, BrowserSSEDecoder } from '../Streaming';
 
 export class BrowserFetch extends Fetch {
   call(url: string, options: FinalRequestOptions): Promise<UnifiedResponse> {

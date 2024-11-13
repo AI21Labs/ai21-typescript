@@ -1,7 +1,7 @@
-import { AI21Error } from 'errors';
-import { Stream } from 'Streaming';
-import { FinalRequestOptions, UnifiedResponse } from 'types';
-import { APIResponseProps } from 'types/API';
+import { AI21Error } from '../errors';
+import { Stream } from '../Streaming';
+import { FinalRequestOptions, UnifiedResponse } from '../types';
+import { APIResponseProps } from '../types/API';
 
 export type APIResponse<T> = {
   data?: T;

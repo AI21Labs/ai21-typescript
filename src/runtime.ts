@@ -1,6 +1,15 @@
-import { BrowserFetch, Fetch, NodeFetch } from 'fetch';
+import { BrowserFetch, Fetch, NodeFetch } from './fetch';
+
 
 export const isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
+
+/**
+ * A Web Worker is a background thread that runs JavaScript code separate from the main thread.
+ * Web Workers enable concurrent processing by:
+ * - Running CPU-intensive tasks without blocking the UI
+ * - Performing background operations like data fetching and processing
+ * - Operating independently from the main window context
+ */
 export const isWebWorker =
   typeof self === 'object' &&
   typeof self?.importScripts === 'function' &&
@@ -14,7 +23,7 @@ export const isNode =
 export function createFetchInstance(): Fetch {
   if (isBrowser || isWebWorker) {
     return new BrowserFetch();
-  } else {
-    return new NodeFetch();
   }
+
+  return new NodeFetch();
 }
