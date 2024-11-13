@@ -1,4 +1,3 @@
-import { Response as NodeResponse } from 'node-fetch';
 import { DefaultSSEDecoder } from './SSEDecoder';
 import { SSEDecoder } from './SSEDecoder';
 import { SSE_DONE_MSG } from './Consts';
@@ -17,7 +16,7 @@ export class Stream<T> implements AsyncIterableIterator<T> {
   private iterator: AsyncIterableIterator<T>;
 
   constructor(
-    private response: NodeResponse,
+    private response: Response,
     decoder?: SSEDecoder,
   ) {
     this.decoder = decoder || new DefaultSSEDecoder();

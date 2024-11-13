@@ -1,11 +1,10 @@
-import { Response as NodeResponse } from 'node-fetch';
-import { Readable } from 'stream';
 import { SSE_DATA_PREFIX } from './Consts';
 import { StreamingDecodeError } from '../errors';
+import { getReadableStream } from 'envFetch';
 
 export interface SSEDecoder {
   decode(line: string): string | null;
-  iterLines(response: NodeResponse): AsyncIterableIterator<string>;
+  iterLines(response: Response): AsyncIterableIterator<string>;
 }
 
 export class DefaultSSEDecoder implements SSEDecoder {
@@ -19,15 +18,14 @@ export class DefaultSSEDecoder implements SSEDecoder {
     throw new StreamingDecodeError(`Invalid SSE line: ${line}`);
   }
 
-  async *iterLines(response: NodeResponse): AsyncIterableIterator<string> {
+  async *iterLines(response: Response): AsyncIterableIterator<string> {
     if (!response.body) {
       throw new Error('Response body is null');
     }
 
-    const webReadableStream = Readable.toWeb(response.body as Readable);
-    const reader = webReadableStream.getReader();
-
+    const reader = await getReadableStream(response.body);
     let buffer = '';
+
 
     try {
       while (true) {

@@ -1,7 +1,3 @@
-import { BlobLike } from 'formdata-node';
-import { Response } from 'node-fetch';
-import { Readable } from 'stream';
-
 export type HTTPMethod = 'get' | 'post' | 'put' | 'patch' | 'delete';
 
 export type APIResponseProps = {
@@ -11,7 +7,7 @@ export type APIResponseProps = {
 };
 
 export type RequestOptions<
-  Req = unknown | Record<string, unknown> | Readable | BlobLike | ArrayBufferView | ArrayBuffer,
+  Req = unknown | Record<string, unknown> | ArrayBufferView | ArrayBuffer,
 > = {
   method?: HTTPMethod;
   path?: string;

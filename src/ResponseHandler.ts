@@ -1,7 +1,6 @@
 import { APIResponseProps } from './types';
 import { AI21Error } from './errors';
 import { Stream } from './Streaming';
-import { Response } from 'node-fetch';
 
 type APIResponse<T> = {
   data?: T;

@@ -1,11 +1,11 @@
 import { AI21Error } from './errors';
 import { VERSION } from './version';
 
-import fetch from 'node-fetch';
-import { HeadersInit, RequestInit } from 'node-fetch';
 import { RequestOptions, FinalRequestOptions, APIResponseProps, HTTPMethod, Headers } from './types/index.js';
 import { AI21EnvConfig } from './EnvConfig';
 import { handleAPIResponse } from './ResponseHandler';
+import { createFetchInstance } from 'envFetch';
+import { Fetch } from 'fetch';
 
 const validatePositiveInteger = (name: string, n: unknown): number => {
   if (typeof n !== 'number' || !Number.isInteger(n)) {
@@ -21,19 +21,23 @@ export abstract class APIClient {
   protected baseURL: string;
   protected maxRetries: number;
   protected timeout: number;
+  protected fetch: Fetch;
 
   constructor({
     baseURL,
     maxRetries = AI21EnvConfig.MAX_RETRIES,
     timeout = AI21EnvConfig.TIMEOUT_SECONDS,
+    fetch = createFetchInstance(),
   }: {
     baseURL: string;
     maxRetries?: number | undefined;
     timeout: number | undefined;
+    fetch?: Fetch;
   }) {
     this.baseURL = baseURL;
     this.maxRetries = validatePositiveInteger('maxRetries', maxRetries);
     this.timeout = validatePositiveInteger('timeout', timeout);
+    this.fetch = fetch;
   }
   get<Req, Rsp>(path: string, opts?: RequestOptions<Req>): Promise<Rsp> {
     return this.makeRequest('get', path, opts);
@@ -93,11 +97,10 @@ export abstract class APIClient {
       ...this.defaultHeaders(options),
       ...options.headers,
     };
-
-    const response = await fetch(url, {
+    const response = await this.fetch.call(url, {
       method: options.method,
-      headers: headers as HeadersInit,
-      signal: controller.signal as RequestInit['signal'],
+      headers: headers as any,
+      signal: controller.signal,
       body: options.body ? JSON.stringify(options.body) : undefined,
     });
 
