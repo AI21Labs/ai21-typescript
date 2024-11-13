@@ -1,9 +1,15 @@
 import { AI21Error } from './errors';
 import { VERSION } from './version';
 
-import { RequestOptions, FinalRequestOptions, APIResponseProps, HTTPMethod, Headers, UnifiedResponse } from './types';
+import {
+  RequestOptions,
+  FinalRequestOptions,
+  APIResponseProps,
+  HTTPMethod,
+  Headers,
+  UnifiedResponse,
+} from './types';
 import { AI21EnvConfig } from './EnvConfig';
-import { handleAPIResponse } from './ResponseHandler';
 import { createFetchInstance } from 'envFetch';
 import { Fetch } from 'fetch';
 

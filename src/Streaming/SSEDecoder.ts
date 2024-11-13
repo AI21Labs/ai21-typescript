@@ -21,40 +21,39 @@ abstract class BaseSSEDecoder implements SSEDecoder {
   abstract iterLines(response: UnifiedResponse): AsyncIterableIterator<string>;
 
   async *_iterLines(reader: ReadableStreamDefaultReader<Uint8Array>): AsyncIterableIterator<string> {
-    
-      let buffer = '';
-  
-      try {
-        while (true) {
-          const { done, value } = await reader.read();
-  
-          if (done) {
-            if (buffer.length > 0) {
-              const decoded = this.decode(buffer.trim());
-              if (decoded) yield decoded;
-            }
-            break;
-          }
-  
-          buffer += new TextDecoder().decode(value);
-          const lines = buffer.split('\n');
-          buffer = lines.pop() || '';
-  
-          for (const line of lines) {
-            const decoded = this.decode(line.trim());
+    let buffer = '';
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+
+        if (done) {
+          if (buffer.length > 0) {
+            const decoded = this.decode(buffer.trim());
             if (decoded) yield decoded;
           }
+          break;
         }
-      } finally {
-        reader.releaseLock();
+
+        buffer += new TextDecoder().decode(value);
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          const decoded = this.decode(line.trim());
+          if (decoded) yield decoded;
+        }
       }
+    } finally {
+      reader.releaseLock();
+    }
   }
 }
 
 export class BrowserSSEDecoder extends BaseSSEDecoder {
   async *iterLines(response: UnifiedResponse): AsyncIterableIterator<string> {
     if (!response.body) {
-        throw new Error('Response body is null');
+      throw new Error('Response body is null');
     }
 
     const body = response.body as ReadableStream<Uint8Array>;
@@ -63,9 +62,10 @@ export class BrowserSSEDecoder extends BaseSSEDecoder {
 }
 
 export class NodeSSEDecoder extends BaseSSEDecoder {
-    async *iterLines(response: UnifiedResponse): AsyncIterableIterator<string> {
-        const readerStream = (await import("stream/web")).ReadableStream as any;
-        const reader = readerStream.from(response.body).getReader();
-        yield* this._iterLines(reader);
-    }
+  async *iterLines(response: UnifiedResponse): AsyncIterableIterator<string> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const readerStream = (await import('stream/web')).ReadableStream as any;
+    const reader = readerStream.from(response.body).getReader();
+    yield* this._iterLines(reader);
+  }
 }

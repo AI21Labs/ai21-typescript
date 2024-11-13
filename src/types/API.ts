@@ -1,14 +1,12 @@
 export type HTTPMethod = 'get' | 'post' | 'put' | 'patch' | 'delete';
 
 export type APIResponseProps = {
-  response: UnifiedResponse;
+  response: CrossPlatformResponse;
   options: FinalRequestOptions;
   controller?: AbortController;
 };
 
-export type RequestOptions<
-  Req = unknown | Record<string, unknown> | ArrayBufferView | ArrayBuffer,
-> = {
+export type RequestOptions<Req = unknown | Record<string, unknown> | ArrayBufferView | ArrayBuffer> = {
   method?: HTTPMethod;
   path?: string;
   query?: Req | undefined;
@@ -27,5 +25,5 @@ export type FinalRequestOptions = RequestOptions & {
 
 export type DefaultQuery = Record<string, unknown>;
 export type Headers = Record<string, string | null | undefined>;
-export type UnifiedResponse = Response | import('node-fetch').Response;
-export type UnifiedReadableStream = ReadableStream<Uint8Array> | import('stream/web').ReadableStream;
+export type CrossPlatformResponse = Response | import('node-fetch').Response;
+export type CrossPlatformReadableStream = ReadableStream<Uint8Array> | import('stream/web').ReadableStream;
