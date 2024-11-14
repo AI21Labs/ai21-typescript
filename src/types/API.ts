@@ -1,18 +1,12 @@
-import { BlobLike } from 'formdata-node';
-import { Response } from 'node-fetch';
-import { Readable } from 'stream';
-
 export type HTTPMethod = 'get' | 'post' | 'put' | 'patch' | 'delete';
 
 export type APIResponseProps = {
-  response: Response;
+  response: CrossPlatformResponse;
   options: FinalRequestOptions;
-  controller: AbortController;
+  controller?: AbortController;
 };
 
-export type RequestOptions<
-  Req = unknown | Record<string, unknown> | Readable | BlobLike | ArrayBufferView | ArrayBuffer,
-> = {
+export type RequestOptions<Req = unknown | Record<string, unknown> | ArrayBufferView | ArrayBuffer> = {
   method?: HTTPMethod;
   path?: string;
   query?: Req | undefined;
@@ -31,3 +25,7 @@ export type FinalRequestOptions = RequestOptions & {
 
 export type DefaultQuery = Record<string, unknown>;
 export type Headers = Record<string, string | null | undefined>;
+
+// Platforms specific types for NodeJS and Browser
+export type CrossPlatformResponse = Response | import('node-fetch').Response;
+export type CrossPlatformReadableStream = ReadableStream<Uint8Array> | import('stream/web').ReadableStream;

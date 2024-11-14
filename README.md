@@ -72,7 +72,7 @@ For detailed information about the available methods and their parameters, pleas
 
 ## Contributing
 
-If you encounter any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/ai21-labs/api-client).
+If you encounter any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/AI21Labs/ai21-typescript).
 
 ## License
 
