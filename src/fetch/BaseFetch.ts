@@ -1,5 +1,5 @@
 import { AI21Error } from '../errors';
-import { Stream } from '../Streaming';
+import { Stream } from '../streaming';
 import { FinalRequestOptions, CrossPlatformResponse } from '../types';
 import { APIResponseProps } from '../types/API';
 
@@ -7,7 +7,7 @@ export type APIResponse<T> = {
   data?: T;
   response: CrossPlatformResponse;
 };
-export abstract class Fetch {
+export abstract class BaseFetch {
   abstract call(url: string, options: FinalRequestOptions): Promise<CrossPlatformResponse>;
   async handleResponse<T>({ response, options }: APIResponseProps) {
     if (options.stream) {

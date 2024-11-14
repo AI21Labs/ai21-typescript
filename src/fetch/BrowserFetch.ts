@@ -1,15 +1,15 @@
 import { FinalRequestOptions, CrossPlatformResponse } from 'types';
-import { Fetch } from './BaseFetch';
-import { Stream, BrowserSSEDecoder } from '../Streaming';
+import { BaseFetch } from './BaseFetch';
+import { Stream, BrowserSSEDecoder } from '../streaming';
 
-export class BrowserFetch extends Fetch {
+export class BrowserFetch extends BaseFetch {
   call(url: string, options: FinalRequestOptions): Promise<CrossPlatformResponse> {
     const controller = new AbortController();
 
     return fetch(url, {
-      method: options?.method,
-      headers: options?.headers as HeadersInit,
-      body: options.body ? JSON.stringify(options.body) : undefined,
+      method: options.method,
+      headers: options?.headers ? options.headers as HeadersInit : undefined,
+      body: options?.body ? JSON.stringify(options.body) : undefined,
       signal: controller.signal,
     });
   }

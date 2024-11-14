@@ -1,15 +1,15 @@
 import { FinalRequestOptions, CrossPlatformResponse } from 'types';
-import { Fetch } from './BaseFetch';
-import { Stream, NodeSSEDecoder } from '../Streaming';
+import { BaseFetch } from './BaseFetch';
+import { Stream, NodeSSEDecoder } from '../streaming';
 
-export class NodeFetch extends Fetch {
+export class NodeFetch extends BaseFetch {
   async call(url: string, options: FinalRequestOptions): Promise<CrossPlatformResponse> {
     const nodeFetchModule = await import('node-fetch');
     const nodeFetch = nodeFetchModule.default;
 
     return nodeFetch(url, {
-      method: options?.method,
-      headers: options.headers as Record<string, string>,
+      method: options.method,
+      headers: options?.headers ? options.headers as Record<string, string> : undefined,
       body: options?.body ? JSON.stringify(options.body) : undefined,
     });
   }
