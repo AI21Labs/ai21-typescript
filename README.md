@@ -34,7 +34,7 @@ const response = await client.chat.completions.create({
   messages: [{ role: 'user', content: 'Hello, how are you? tell me a 100 line story about a cat named "Fluffy"' }],
 });
 
-console.log(response.data);
+console.log(response);
 ```
 
 ### Streaming Responses
@@ -44,13 +44,13 @@ The client supports streaming responses for real-time processing. Here are examp
 #### Using Async Iterator
 
 ```typescript
-const stream = await ai21.chat.completions.create({
+const streamResponse = await ai21.chat.completions.create({
   model: 'jamba-1.5-mini',
   messages: [{ role: 'user', content: 'Write a story about a space cat' }],
   stream: true,
 });
 
-for await (const chunk of stream) {
+for await (const chunk of streamResponse) {
   console.log(chunk.choices[0]?.delta?.content || '');
 }
 ```
@@ -62,7 +62,7 @@ The `AI21` class provides a `chat` property that gives you access to the Chat AP
 The `AI21` class accepts several configuration options, which you can pass in when creating a new instance:
 
 - `baseURL`: The base URL for the API endpoint (default: `https://api.ai21.com/studio/v1`)
-- `apiKey`: Your AI21 API key
+- `apiKey`: Your AI21 API Key
 - `maxRetries`: The maximum number of retries for failed requests (default: `3`)
 - `timeout`: The request timeout in seconds
 
@@ -76,4 +76,4 @@ If you encounter any issues or have suggestions for improvements, please feel fr
 
 ## License
 
-This library is licensed under the [MIT License](LICENSE).
+This library is licensed under the [Apache-2.0 License](LICENSE).
