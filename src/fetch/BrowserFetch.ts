@@ -1,9 +1,9 @@
-import { FinalRequestOptions, UnifiedResponse } from 'types';
+import { FinalRequestOptions, CrossPlatformResponse } from 'types';
 import { Fetch } from './BaseFetch';
 import { Stream, BrowserSSEDecoder } from '../Streaming';
 
 export class BrowserFetch extends Fetch {
-  call(url: string, options: FinalRequestOptions): Promise<UnifiedResponse> {
+  call(url: string, options: FinalRequestOptions): Promise<CrossPlatformResponse> {
     const controller = new AbortController();
 
     return fetch(url, {
@@ -14,7 +14,7 @@ export class BrowserFetch extends Fetch {
     });
   }
 
-  handleStream<T>(response: UnifiedResponse): Stream<T> {
+  handleStream<T>(response: CrossPlatformResponse): Stream<T> {
     return new Stream<T>(response as Response, new BrowserSSEDecoder());
   }
 }

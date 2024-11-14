@@ -1,4 +1,7 @@
+import dotenv from 'dotenv';
 import { AI21 } from './AI21';
+
+dotenv.config({ path: '.env' });
 /*
   This is a temporary example to test the API streaming/non-streaming functionality.
 */

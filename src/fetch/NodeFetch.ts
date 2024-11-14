@@ -1,9 +1,9 @@
-import { FinalRequestOptions, UnifiedResponse } from 'types';
+import { FinalRequestOptions, CrossPlatformResponse } from 'types';
 import { Fetch } from './BaseFetch';
 import { Stream, NodeSSEDecoder } from '../Streaming';
 
 export class NodeFetch extends Fetch {
-  async call(url: string, options: FinalRequestOptions): Promise<UnifiedResponse> {
+  async call(url: string, options: FinalRequestOptions): Promise<CrossPlatformResponse> {
     const nodeFetchModule = await import('node-fetch');
     const nodeFetch = nodeFetchModule.default;
 
@@ -14,7 +14,7 @@ export class NodeFetch extends Fetch {
     });
   }
 
-  handleStream<T>(response: UnifiedResponse): Stream<T> {
+  handleStream<T>(response: CrossPlatformResponse): Stream<T> {
     type NodeRespose = import('node-fetch').Response;
     return new Stream<T>(response as NodeRespose, new NodeSSEDecoder());
   }
