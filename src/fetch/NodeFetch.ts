@@ -9,7 +9,7 @@ export class NodeFetch extends BaseFetch {
 
     return nodeFetch(url, {
       method: options.method,
-      headers: options?.headers ? options.headers as Record<string, string> : undefined,
+      headers: options?.headers ? (options.headers as Record<string, string>) : undefined,
       body: options?.body ? JSON.stringify(options.body) : undefined,
     });
   }
