@@ -1,4 +1,4 @@
-import { AI21 } from "../AI21";
+import { AI21 } from '../AI21';
 
 /*
   This is a temporary example to test the API streaming/non-streaming functionality.
@@ -7,7 +7,6 @@ async function main() {
   const client = new AI21({ apiKey: process.env.AI21_API_KEY });
 
   try {
-
     console.log('-------------------------------- streaming flow --------------------------------');
 
     const streamResponse = await client.chat.completions.create({

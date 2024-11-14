@@ -4,14 +4,10 @@ import { ConversationalRagRequest } from '../../types/rag/ConversationalRagReque
 import { ConversationalRagResponse } from '../../types/rag/ConversationalRagResponse';
 
 export class ConversationalRag extends APIResource {
-
-  create(body: ConversationalRagRequest, options?: Models.RequestOptions){
-    return this.client.post<ConversationalRagRequest, ConversationalRagResponse>(
-      '/conversational-rag',
-      {
-        body,
-        ...options,
-      } as Models.RequestOptions<ConversationalRagRequest>,
-    ) as Promise<ConversationalRagResponse>;
+  create(body: ConversationalRagRequest, options?: Models.RequestOptions) {
+    return this.client.post<ConversationalRagRequest, ConversationalRagResponse>('/conversational-rag', {
+      body,
+      ...options,
+    } as Models.RequestOptions<ConversationalRagRequest>) as Promise<ConversationalRagResponse>;
   }
 }
