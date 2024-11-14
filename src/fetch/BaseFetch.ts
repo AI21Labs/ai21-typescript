@@ -1,5 +1,5 @@
 import { AI21Error } from '../errors';
-import { Stream } from '../Streaming';
+import { Stream } from '../streaming';
 import { FinalRequestOptions, CrossPlatformResponse } from '../types';
 import { APIResponseProps } from '../types/API';
 

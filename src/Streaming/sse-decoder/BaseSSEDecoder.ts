@@ -1,7 +1,6 @@
 import { SSE_DATA_PREFIX } from '../Consts';
 import { StreamingDecodeError } from '../../errors';
 import { CrossPlatformResponse } from '../../types';
-import { TextDecoder } from 'util';
 
 export interface SSEDecoder {
   decode(line: string): string | null;

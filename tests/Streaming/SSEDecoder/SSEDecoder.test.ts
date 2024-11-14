@@ -1,4 +1,4 @@
-import { BrowserSSEDecoder, NodeSSEDecoder } from '../../../src/Streaming/SSEDecoder';
+import { BrowserSSEDecoder, NodeSSEDecoder } from '../../../src/streaming/sse-decoder';
 import { StreamingDecodeError } from '../../../src/errors';
 import { CrossPlatformResponse } from '../../../src/types';
 import { TextEncoder } from 'util';

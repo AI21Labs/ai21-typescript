@@ -1,5 +1,5 @@
-import { BrowserSSEDecoder } from './SSEDecoder';
-import { SSEDecoder } from './SSEDecoder';
+import { BrowserSSEDecoder } from './sse-decoder';
+import { SSEDecoder } from './sse-decoder';
 import { SSE_DONE_MSG } from './Consts';
 import { StreamingDecodeError } from '../errors';
 import { CrossPlatformResponse } from '../types';

@@ -1,6 +1,6 @@
 import { FinalRequestOptions, CrossPlatformResponse } from 'types';
 import { Fetch } from './BaseFetch';
-import { Stream, BrowserSSEDecoder } from '../Streaming';
+import { Stream, BrowserSSEDecoder } from '../streaming';
 
 export class BrowserFetch extends Fetch {
   call(url: string, options: FinalRequestOptions): Promise<CrossPlatformResponse> {
