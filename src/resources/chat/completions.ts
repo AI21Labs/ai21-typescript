@@ -1,6 +1,6 @@
 import * as Models from '../../types';
 import { APIResource } from '../../APIResource';
-import { Stream } from '../../Streaming';
+import { Stream } from '../../streaming';
 
 export class Completions extends APIResource {
   create(
