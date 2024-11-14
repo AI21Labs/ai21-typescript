@@ -34,5 +34,5 @@ export {
   type HTTPMethod,
   type DefaultQuery,
   type Headers,
-  type CrossPlatformResponse as UnifiedResponse,
+  type CrossPlatformResponse,
 } from './API';

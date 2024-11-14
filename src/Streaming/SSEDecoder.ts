@@ -1,10 +1,10 @@
 import { SSE_DATA_PREFIX } from './Consts';
 import { StreamingDecodeError } from '../errors';
-import { UnifiedResponse } from 'types';
+import { CrossPlatformResponse } from 'types';
 
 export interface SSEDecoder {
   decode(line: string): string | null;
-  iterLines(response: UnifiedResponse): AsyncIterableIterator<string>;
+  iterLines(response: CrossPlatformResponse): AsyncIterableIterator<string>;
 }
 
 abstract class BaseSSEDecoder implements SSEDecoder {
@@ -18,7 +18,7 @@ abstract class BaseSSEDecoder implements SSEDecoder {
     throw new StreamingDecodeError(`Invalid SSE line: ${line}`);
   }
 
-  abstract iterLines(response: UnifiedResponse): AsyncIterableIterator<string>;
+  abstract iterLines(response: CrossPlatformResponse): AsyncIterableIterator<string>;
 
   async *_iterLines(reader: ReadableStreamDefaultReader<Uint8Array>): AsyncIterableIterator<string> {
     let buffer = '';
@@ -51,7 +51,7 @@ abstract class BaseSSEDecoder implements SSEDecoder {
 }
 
 export class BrowserSSEDecoder extends BaseSSEDecoder {
-  async *iterLines(response: UnifiedResponse): AsyncIterableIterator<string> {
+  async *iterLines(response: CrossPlatformResponse): AsyncIterableIterator<string> {
     if (!response.body) {
       throw new Error('Response body is null');
     }
@@ -62,7 +62,7 @@ export class BrowserSSEDecoder extends BaseSSEDecoder {
 }
 
 export class NodeSSEDecoder extends BaseSSEDecoder {
-  async *iterLines(response: UnifiedResponse): AsyncIterableIterator<string> {
+  async *iterLines(response: CrossPlatformResponse): AsyncIterableIterator<string> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const readerStream = (await import('stream/web')).ReadableStream as any;
     const reader = readerStream.from(response.body).getReader();

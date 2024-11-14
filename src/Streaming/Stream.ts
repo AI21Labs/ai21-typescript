@@ -1,8 +1,7 @@
-import { BrowserSSEDecoder } from './SSEDecoder';
-import { SSEDecoder } from './SSEDecoder';
+import { SSEDecoder, BrowserSSEDecoder } from './SSEDecoder';
 import { SSE_DONE_MSG } from './Consts';
 import { StreamingDecodeError } from '../errors';
-import { UnifiedResponse } from '../types';
+import { CrossPlatformResponse } from '../types';
 
 function getStreamMessage<T>(chunk: string): T {
   try {
@@ -17,7 +16,7 @@ export class Stream<T> implements AsyncIterableIterator<T> {
   private iterator: AsyncIterableIterator<T>;
 
   constructor(
-    private response: UnifiedResponse,
+    private response: CrossPlatformResponse,
     decoder?: SSEDecoder,
   ) {
     this.decoder = decoder || new BrowserSSEDecoder();

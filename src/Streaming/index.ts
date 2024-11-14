@@ -1,2 +1,6 @@
 export { Stream } from './Stream';
-export { BrowserSSEDecoder, NodeSSEDecoder, SSEDecoder } from './SSEDecoder';
+export { 
+    BrowserSSEDecoder,
+    NodeSSEDecoder,
+    type SSEDecoder,
+} from './SSEDecoder';

@@ -1,14 +1,14 @@
 import { AI21Error } from '../errors';
 import { Stream } from '../Streaming';
-import { FinalRequestOptions, UnifiedResponse } from '../types';
+import { FinalRequestOptions, CrossPlatformResponse } from '../types';
 import { APIResponseProps } from '../types/API';
 
 export type APIResponse<T> = {
   data?: T;
-  response: UnifiedResponse;
+  response: CrossPlatformResponse;
 };
 export abstract class Fetch {
-  abstract call(url: string, options: FinalRequestOptions): Promise<UnifiedResponse>;
+  abstract call(url: string, options: FinalRequestOptions): Promise<CrossPlatformResponse>;
   async handleResponse<T>({ response, options }: APIResponseProps) {
     if (options.stream) {
       if (!response.body) {
@@ -21,5 +21,5 @@ export abstract class Fetch {
     const contentType = response.headers.get('content-type');
     return contentType?.includes('application/json') ? await response.json() : null;
   }
-  abstract handleStream<T>(response: UnifiedResponse): Stream<T>;
+  abstract handleStream<T>(response: CrossPlatformResponse): Stream<T>;
 }

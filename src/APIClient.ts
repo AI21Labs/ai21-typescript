@@ -7,7 +7,7 @@ import {
   APIResponseProps,
   HTTPMethod,
   Headers,
-  UnifiedResponse,
+  CrossPlatformResponse,
 } from './types';
 import { AI21EnvConfig } from './EnvConfig';
 import { createFetchInstance } from './runtime';
@@ -108,7 +108,7 @@ export abstract class APIClient {
       throw new AI21Error(`Request failed with status ${response.status}. ${await response.text()}`);
     }
 
-    return { response: response as UnifiedResponse, options };
+    return { response: response as CrossPlatformResponse, options };
   }
 
   protected isRunningInBrowser(): boolean {
