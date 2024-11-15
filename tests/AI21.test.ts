@@ -19,7 +19,7 @@ describe('AI21', () => {
     });
 
     it('should throw MissingAPIKeyError when no API key provided', () => {
-      expect(() => new AI21({apiKey: undefined} as ClientOptions)).toThrow(MissingAPIKeyError);
+      expect(() => new AI21({apiKey: undefined, dangerouslyAllowBrowser: true} as ClientOptions)).toThrow(MissingAPIKeyError);
     });
 
     it('should throw AI21Error when browser is detected without dangerouslyAllowBrowser option', () => {

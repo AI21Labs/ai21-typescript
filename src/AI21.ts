@@ -48,15 +48,15 @@ export class AI21 extends APIClient {
       );
     }
 
+    if (apiKey === undefined) {
+      throw new MissingAPIKeyError();
+    }
+
     super({
       baseURL,
       timeout,
       maxRetries,
     });
-
-    if (apiKey === undefined) {
-      throw new MissingAPIKeyError();
-    }
 
     this.apiKey = apiKey;
     this.via = via ?? null;
