@@ -35,3 +35,10 @@ export {
   type DefaultQuery,
   type Headers,
 } from './API';
+
+export {
+  type ConversationalRagRequest,
+  type ConversationalRagResponse,
+  type ConversationalRagSource,
+  type RetrievalStrategy,
+} from './rag';
