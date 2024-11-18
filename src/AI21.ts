@@ -1,19 +1,24 @@
 import * as Types from './types';
 import { AI21EnvConfig } from './EnvConfig';
-import { MissingAPIKeyError } from './errors';
+import { AI21Error, MissingAPIKeyError } from './errors';
 import { Chat } from './resources/chat';
 import { APIClient } from './APIClient';
 import { Headers } from './types';
+import * as Runtime from './runtime';
 
-export type ClientOptions = {
+export interface ClientOptions {
   baseURL?: string;
   apiKey?: string;
   maxRetries?: number;
   timeout?: number;
   via?: string | null;
   defaultHeaders?: Headers;
+  /**
+   * By default, using this library on the client side is prohibited to prevent exposing your secret API credentials to potential attackers.
+   * Only enable this option by setting it to `true` if you fully understand the risks and have implemented appropriate security measures.
+   */
   dangerouslyAllowBrowser?: boolean;
-};
+}
 
 export class AI21 extends APIClient {
   protected options: ClientOptions;
@@ -27,7 +32,7 @@ export class AI21 extends APIClient {
     maxRetries,
     via,
     ...opts
-  }: ClientOptions) {
+  }: ClientOptions = {}) {
     const options: ClientOptions = {
       apiKey,
       baseURL,
@@ -37,15 +42,21 @@ export class AI21 extends APIClient {
       ...opts,
     };
 
+    if (!options.dangerouslyAllowBrowser && Runtime.isBrowser) {
+      throw new AI21Error(
+        'AI21 client is not supported in the browser by default due to potential API key exposure. Use `dangerouslyAllowBrowser` option to `true` to override it.',
+      );
+    }
+
+    if (apiKey === undefined) {
+      throw new MissingAPIKeyError();
+    }
+
     super({
       baseURL,
       timeout,
       maxRetries,
     });
-
-    if (apiKey === undefined) {
-      throw new MissingAPIKeyError();
-    }
 
     this.apiKey = apiKey;
     this.via = via ?? null;
