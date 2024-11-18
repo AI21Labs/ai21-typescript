@@ -1,8 +1,5 @@
-import { AI21 } from '../AI21';
+import { AI21 } from 'ai21';
 
-/*
-  This is a temporary example to test the Conversational RAG functionality.
-*/
 async function main() {
   /* TODO - add a file upload example when library support is added and combine it with the below flow */
 
