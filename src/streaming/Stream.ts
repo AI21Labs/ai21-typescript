@@ -1,8 +1,7 @@
-import { Response as NodeResponse } from 'node-fetch';
-import { DefaultSSEDecoder } from './SSEDecoder';
-import { SSEDecoder } from './SSEDecoder';
+import { SSEDecoder, BrowserSSEDecoder } from './SSEDecoder';
 import { SSE_DONE_MSG } from './Consts';
 import { StreamingDecodeError } from '../errors';
+import { CrossPlatformResponse } from '../types';
 
 function getStreamMessage<T>(chunk: string): T {
   try {
@@ -17,15 +16,15 @@ export class Stream<T> implements AsyncIterableIterator<T> {
   private iterator: AsyncIterableIterator<T>;
 
   constructor(
-    private response: NodeResponse,
+    private response: CrossPlatformResponse,
     decoder?: SSEDecoder,
   ) {
-    this.decoder = decoder || new DefaultSSEDecoder();
+    this.decoder = decoder || new BrowserSSEDecoder();
     this.iterator = this.stream();
   }
 
   private async *stream(): AsyncIterableIterator<T> {
-    for await (const chunk of this.decoder.iterLines(this.response)) {
+    for await (const chunk of this.decoder.iterLines(this.response as Response)) {
       if (chunk === SSE_DONE_MSG) break;
       yield getStreamMessage(chunk);
     }

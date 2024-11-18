@@ -1,11 +1,17 @@
 import { AI21Error } from './errors';
 import { VERSION } from './version';
 
-import fetch from 'node-fetch';
-import { HeadersInit, RequestInit } from 'node-fetch';
-import { RequestOptions, FinalRequestOptions, APIResponseProps, HTTPMethod, Headers } from './types/index.js';
+import {
+  RequestOptions,
+  FinalRequestOptions,
+  APIResponseProps,
+  HTTPMethod,
+  Headers,
+  CrossPlatformResponse,
+} from './types';
 import { AI21EnvConfig } from './EnvConfig';
-import { handleAPIResponse } from './ResponseHandler';
+import { createFetchInstance } from './runtime';
+import { Fetch } from 'fetch';
 
 const validatePositiveInteger = (name: string, n: unknown): number => {
   if (typeof n !== 'number' || !Number.isInteger(n)) {
@@ -21,19 +27,23 @@ export abstract class APIClient {
   protected baseURL: string;
   protected maxRetries: number;
   protected timeout: number;
+  protected fetch: Fetch;
 
   constructor({
     baseURL,
     maxRetries = AI21EnvConfig.MAX_RETRIES,
     timeout = AI21EnvConfig.TIMEOUT_SECONDS,
+    fetch = createFetchInstance(),
   }: {
     baseURL: string;
     maxRetries?: number | undefined;
     timeout: number | undefined;
+    fetch?: Fetch;
   }) {
     this.baseURL = baseURL;
     this.maxRetries = validatePositiveInteger('maxRetries', maxRetries);
     this.timeout = validatePositiveInteger('timeout', timeout);
+    this.fetch = fetch;
   }
   get<Req, Rsp>(path: string, opts?: RequestOptions<Req>): Promise<Rsp> {
     return this.makeRequest('get', path, opts);
@@ -81,31 +91,24 @@ export abstract class APIClient {
     };
 
     return this.performRequest(options as FinalRequestOptions).then(
-      (response) => handleAPIResponse<Rsp>(response) as Rsp,
+      (response) => this.fetch.handleResponse<Rsp>(response) as Rsp,
     );
   }
 
   private async performRequest(options: FinalRequestOptions): Promise<APIResponseProps> {
-    const controller = new AbortController();
     const url = `${this.baseURL}${options.path}`;
 
     const headers = {
       ...this.defaultHeaders(options),
       ...options.headers,
     };
-
-    const response = await fetch(url, {
-      method: options.method,
-      headers: headers as HeadersInit,
-      signal: controller.signal as RequestInit['signal'],
-      body: options.body ? JSON.stringify(options.body) : undefined,
-    });
+    const response = await this.fetch.call(url, { ...options, headers });
 
     if (!response.ok) {
       throw new AI21Error(`Request failed with status ${response.status}. ${await response.text()}`);
     }
 
-    return { response, options, controller };
+    return { response: response as CrossPlatformResponse, options };
   }
 
   protected isRunningInBrowser(): boolean {
