@@ -3,7 +3,7 @@ import { AI21, ChatMessage, ToolDefinition } from 'ai21';
 // Mock database function
 const getOrderDeliveryDate = (orderId: string): string => {
   console.log(`Retrieving the delivery date for order ID: ${orderId} from the database...`);
-  return "2025-05-04";
+  return '2025-05-04';
 };
 
 async function main() {
@@ -19,23 +19,25 @@ async function main() {
     { role: 'user', content: 'i think it is order_12345' },
   ];
 
-  const tools: ToolDefinition[] = [{
-    type: 'function',
-    function: {
-      name: 'get_order_delivery_date',
-      description: 'Retrieve the delivery date associated with the specified order ID',
-      parameters: {
-        type: 'object',
-        properties: {
-          order_id: {
-            type: 'string',
-            description: 'The customer\'s order ID.',
+  const tools: ToolDefinition[] = [
+    {
+      type: 'function',
+      function: {
+        name: 'get_order_delivery_date',
+        description: 'Retrieve the delivery date associated with the specified order ID',
+        parameters: {
+          type: 'object',
+          properties: {
+            order_id: {
+              type: 'string',
+              description: "The customer's order ID.",
+            },
           },
+          required: ['order_id'],
         },
-        required: ['order_id'],
       },
     },
-  }];
+  ];
 
   try {
     // First response with streaming
@@ -45,10 +47,10 @@ async function main() {
       tools,
     });
 
-    const assistantMessage = response.choices[0].message
-    console.log(assistantMessage)
+    const assistantMessage = response.choices[0].message;
+    console.log(assistantMessage);
 
-    messages.push(assistantMessage)
+    messages.push(assistantMessage);
 
     // Handle tool calls
     if (assistantMessage.tool_calls?.length) {
@@ -57,7 +59,7 @@ async function main() {
         const args = JSON.parse(toolCall.function.arguments);
         if (args.order_id) {
           const deliveryDate = getOrderDeliveryDate(args.order_id);
-          
+
           // Add tool response to messages
           messages.push({
             role: 'tool',
@@ -76,7 +78,6 @@ async function main() {
         }
       }
     }
-
   } catch (error) {
     console.error('Error:', error);
   }
