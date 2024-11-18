@@ -9,7 +9,7 @@ class MockAPIClient extends APIClient {
   }
   
 
-describe('Completions', () => {
+describe('ConversationalRag', () => {
   let convRag: ConversationalRag;
   let mockClient: MockAPIClient;
   const dummyAPIKey = "test-api-key";
@@ -28,7 +28,7 @@ describe('Completions', () => {
     jest.clearAllMocks();
   });
 
-  it('should create a chat completion with answer_in_context false when relevant context is not found', async () => {
+  it('should create a conversational-rag response with answer_in_context false when relevant context is not found', async () => {
     const body = {messages: [{ role: 'user', content: 'What is the meaning of life?' }]}
     
     const options: Models.RequestOptions = { headers: { 'Authorization': `Bearer ${dummyAPIKey}` } };
@@ -58,7 +58,7 @@ describe('Completions', () => {
   });
 
 
-  it('should create a chat completion with answer_in_context true and sources when relevant context is found', async () => {
+  it('should create a conversational-rag response with answer_in_context true and sources when relevant context is found', async () => {
     const body = {messages: [{ role: 'user', content: 'What is the OOO policy in our office?' }]}
     
     const options: Models.RequestOptions = { headers: { 'Authorization': `Bearer ${dummyAPIKey}` } };
