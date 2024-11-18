@@ -36,3 +36,10 @@ export {
   type Headers,
   type CrossPlatformResponse,
 } from './API';
+
+export {
+  type ConversationalRagRequest,
+  type ConversationalRagResponse,
+  type ConversationalRagSource,
+  type RetrievalStrategy,
+} from './rag';
