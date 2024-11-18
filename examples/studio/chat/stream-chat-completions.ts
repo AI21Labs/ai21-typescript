@@ -1,8 +1,13 @@
+<<<<<<<< HEAD:src/examples/chatExample.ts
 import { AI21 } from '../AI21';
 
 /*
   This is a temporary example to test the API streaming/non-streaming functionality.
 */
+========
+import { AI21 } from 'ai21';
+
+>>>>>>>> 61d25ea (docs: Added examples):examples/studio/chat/stream-chat-completions.ts
 async function main() {
   const client = new AI21({ apiKey: process.env.AI21_API_KEY });
 
