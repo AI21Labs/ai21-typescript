@@ -53,3 +53,5 @@ export {
   type UpdateFileRequest,
   type FilePathOrFileObject,
 } from './files';
+
+export { type MaestroRunRequest, type MaestroRunResponse, type MaestroRunRequestOptions } from './maestro';

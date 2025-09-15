@@ -4,7 +4,7 @@ import { AI21Error, MissingAPIKeyError } from './errors';
 import { APIClient } from './APIClient';
 import { Headers } from './types';
 import * as Runtime from './runtime';
-import { Chat, ConversationalRag, Library } from './resources';
+import { Beta, Chat, ConversationalRag, Library } from './resources';
 
 export interface ClientOptions {
   baseURL?: string | undefined;
@@ -67,6 +67,7 @@ export class AI21 extends APIClient {
   chat: Chat = new Chat(this);
   conversationalRag: ConversationalRag = new ConversationalRag(this);
   library: Library = new Library(this);
+  beta: Beta = new Beta(this);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected override authHeaders(_: Types.FinalRequestOptions): Types.Headers {
