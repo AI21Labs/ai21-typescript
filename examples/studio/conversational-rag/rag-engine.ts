@@ -15,7 +15,7 @@ async function waitForFileProcessing(
   const startTime = Date.now();
 
   while (Date.now() - startTime < timeout) {
-    const file: FileResponse = await client.files.get(fileId);
+    const file: FileResponse = await client.library.files.get(fileId);
     if (file.status !== 'PROCESSING') {
       return file;
     }
@@ -29,7 +29,7 @@ async function uploadGetUpdateDelete(fileInput, path) {
   const client = new AI21({ apiKey: process.env.AI21_API_KEY });
   try {
     console.log(`Starting upload for file:`, typeof fileInput);
-    const uploadFileResponse: UploadFileResponse = await client.files.create({
+    const uploadFileResponse: UploadFileResponse = await client.library.files.create({
       file: fileInput,
       path: path,
     });
@@ -41,12 +41,12 @@ async function uploadGetUpdateDelete(fileInput, path) {
 
     if (file.status === 'PROCESSED') {
       console.log('Starting file update...');
-      await client.files.update({
+      await client.library.files.update({
         fileId: uploadFileResponse.fileId,
         labels: ['test99'],
         publicUrl: 'https://www.miri.com',
       });
-      file = await client.files.get(uploadFileResponse.fileId);
+      file = await client.library.files.get(uploadFileResponse.fileId);
       console.log('✓ File update completed');
     } else {
       console.log(`⚠ File processing failed with status ${file.status}`);
@@ -54,7 +54,7 @@ async function uploadGetUpdateDelete(fileInput, path) {
     }
 
     console.log('Starting file deletion...');
-    await client.files.delete(uploadFileResponse.fileId);
+    await client.library.files.delete(uploadFileResponse.fileId);
     console.log('✓ File deletion completed');
 
     // Add buffer time between operations
@@ -67,7 +67,7 @@ async function uploadGetUpdateDelete(fileInput, path) {
 
 async function listFiles() {
   const client = new AI21({ apiKey: process.env.AI21_API_KEY });
-  const files = await client.files.list({ limit: 4 });
+  const files = await client.library.files.list({ limit: 4 });
   console.log(`Listed files: ${files}`);
 }
 

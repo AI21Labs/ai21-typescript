@@ -49,5 +49,5 @@ export { APIClient } from './APIClient';
 export { AI21Error, MissingAPIKeyError } from './errors';
 export { Stream } from './streaming';
 export { APIResource } from './APIResource';
-export { Chat, Completions, ConversationalRag, Files } from './resources';
+export { Chat, Completions, ConversationalRag, Library } from './resources';
 export { isBrowser, isNode } from './runtime';

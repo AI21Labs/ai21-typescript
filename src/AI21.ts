@@ -1,12 +1,10 @@
 import * as Types from './types';
 import { AI21EnvConfig } from './EnvConfig';
 import { AI21Error, MissingAPIKeyError } from './errors';
-import { Chat } from './resources/chat';
 import { APIClient } from './APIClient';
 import { Headers } from './types';
 import * as Runtime from './runtime';
-import { ConversationalRag } from './resources/rag/conversational-rag';
-import { Files } from './resources';
+import { Chat, ConversationalRag, Library } from './resources';
 
 export interface ClientOptions {
   baseURL?: string | undefined;
@@ -68,7 +66,7 @@ export class AI21 extends APIClient {
   // Resources
   chat: Chat = new Chat(this);
   conversationalRag: ConversationalRag = new ConversationalRag(this);
-  files: Files = new Files(this);
+  library: Library = new Library(this);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected override authHeaders(_: Types.FinalRequestOptions): Types.Headers {
