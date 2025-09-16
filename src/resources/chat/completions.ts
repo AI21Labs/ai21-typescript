@@ -2,7 +2,7 @@ import * as Models from '../../types';
 import { APIResource } from '../../APIResource';
 import { Stream } from '../../streaming';
 
-const deprecatedModels = ['jamba-1.6-mini', 'jamba-1.6-large'];
+const deprecatedModels = ['jamba-mini-1.6', 'jamba-large-1.6'];
 
 export class Completions extends APIResource {
   create(

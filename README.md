@@ -17,9 +17,9 @@ The AI21 API Client is a TypeScript library that provides a convenient interface
 - [Examples](#examples-tldr) 🗂️
 - [AI21 Official Documentation](#Documentation)
 - [Chat](#Chat)
+- [Maestro (Beta)](#Maestro)
 - [Conversational RAG (Beta)](#Conversational-RAG)
-- [Files](#Files)
-
+- [Library](#Library)
 
 ## Environment Support
 
@@ -32,7 +32,7 @@ This client supports both Node.js and browser environments:
 // Browser usage example
 const client = new AI21({
   apiKey: process.env.AI21_API_KEY, // or pass it in directly
-  dangerouslyAllowBrowser: true  // Required for browser environments
+  dangerouslyAllowBrowser: true, // Required for browser environments
 });
 ```
 
@@ -64,7 +64,6 @@ Feel free to dive in, experiment, and adapt these examples to suit your needs. W
 
 The full documentation for the REST API can be found on [docs.ai21.com](https://docs.ai21.com/).
 
-
 ## Chat
 
 To use the AI21 API Client, you'll need to have an API key. You can obtain an API key by signing up for an account on the AI21 website.
@@ -82,7 +81,9 @@ const client = new AI21({
 
 const response = await client.chat.completions.create({
   model: 'jamba-mini',
-  messages: [{ role: 'user', content: 'Hello, how are you? tell me a 100 line story about a cat named "Fluffy"' }],
+  messages: [
+    { role: 'user', content: 'Hello, how are you? tell me a 100 line story about a cat named "Fluffy"' },
+  ],
 });
 
 console.log(response);
@@ -105,12 +106,121 @@ for await (const chunk of streamResponse) {
   console.log(chunk.choices[0]?.delta?.content || '');
 }
 ```
+
 ---
+
+## Maestro (Beta)
+
+AI21 Maestro is an advanced AI orchestration platform that can intelligently use tools and manage complex workflows. The `AI21` class provides a `beta.maestro` property that gives you access to the Maestro API.
+
+### Basic Usage
+
+```typescript
+import { AI21 } from 'ai21';
+
+const client = new AI21({
+  apiKey: process.env.AI21_API_KEY,
+});
+
+// Create a maestro run
+const run = await client.beta.maestro.runs.create({
+  input: 'Analyze the latest market trends in renewable energy',
+});
+
+// Get the run status
+const result = await client.beta.maestro.runs.get(run.id);
+console.log(result);
+```
+
+### Create and Poll (Recommended)
+
+For convenience, you can use `create_and_poll()` which automatically waits for completion:
+
+```typescript
+const result = await client.beta.maestro.runs.create_and_poll(
+  {
+    input: 'Write a comprehensive report on AI trends in 2024',
+    tools: ['web_search'],
+    budget: 'medium',
+  },
+  {
+    timeout: 30000, // 30 seconds
+    interval: 2000, // Poll every 2 seconds
+  },
+);
+
+console.log(result.result);
+```
+
+### Advanced Features
+
+Maestro supports various advanced configurations:
+
+```typescript
+const advancedRun = await client.beta.maestro.runs.create_and_poll({
+  input: 'Research sustainable energy solutions',
+
+  // Specify tools to use
+  tools: ['web_search', 'file_search'],
+
+  // Configure tool resources
+  tool_resources: {
+    web_search: {
+      urls: ['https://example.com', 'https://research.org'],
+    },
+    file_search: {
+      file_ids: ['file-123', 'file-456'],
+      labels: ['research', 'energy'],
+    },
+  },
+
+  // Define specific requirements
+  requirements: [
+    {
+      name: 'Data Sources',
+      description: 'Include at least 3 credible sources',
+      isMandatory: true,
+    },
+    {
+      name: 'Length',
+      description: 'Report should be 1000-2000 words',
+      isMandatory: false,
+    },
+  ],
+
+  // Specify models to use
+  models: ['jamba-large'],
+
+  // Control resource allocation
+  budget: 'high',
+
+  // Request additional fields in response
+  include: ['data_sources', 'requirements_result'],
+
+  // Set response language
+  response_language: 'english',
+});
+```
+
+### Structured Input messages
+
+You can also provide structured input messages:
+
+```typescript
+const structuredRun = await client.beta.maestro.runs.create({
+  input: [
+    { role: 'system', content: 'You are a research assistant specializing in technology trends.' },
+    { role: 'user', content: 'What are the emerging AI technologies in healthcare?' },
+  ],
+  tools: ['web_search'],
+});
+```
+
+---
+
 ### Files
 
-
 The `AI21` class provides a `files` property that gives you access to the Files API. You can use it to upload, retrieve, update, list, and delete files.
-
 
 ```typescript
 import { AI21 } from 'ai21';
@@ -120,22 +230,19 @@ const client = new AI21({
 });
 
 const fileUploadResponse = await client.files.create({
- file: './articles/article1.pdf',
- labels: ['science', 'biology'],
- path: 'virtual-path/to/science-articles',
+  file: './articles/article1.pdf',
+  labels: ['science', 'biology'],
+  path: 'virtual-path/to/science-articles',
 });
 
-
 const file = await client.files.get(fileUploadResponse.fileId);
-
 ```
 
 ---
+
 ### Conversational-RAG
 
-
 The `AI21` class provides a `conversationalRag` property that gives you access to the Conversational RAG API. You can use it to ask questions that are answered based on the files you uploaded.
-
 
 ```typescript
 import { AI21 } from 'ai21';
@@ -145,11 +252,56 @@ const client = new AI21({
 });
 
 const convRagResponse = await client.conversationalRag.create({
-     messages: [{ role: 'user', content: 'This question presumes that the answer can be found within the uploaded files.' }],
-   });
-
+  messages: [
+    {
+      role: 'user',
+      content: 'This question presumes that the answer can be found within the uploaded files.',
+    },
+  ],
+});
 ```
 
+---
+
+## Library
+
+The `AI21` class provides a `library` property that gives you access to the Library Files API. This is a separate file management system designed for library-specific operations.
+
+### Library Files Management
+
+```typescript
+import { AI21 } from 'ai21';
+
+const client = new AI21({
+  apiKey: process.env.AI21_API_KEY,
+});
+
+// Upload a file to the library
+const libraryFile = await client.library.files.create({
+  file: './documents/research-paper.pdf',
+  labels: ['research', 'academic'],
+  path: 'library/research/papers',
+});
+
+// Get a library file
+const file = await client.library.files.get(libraryFile.fileId);
+
+// List library files with filters
+const files = await client.library.files.list({
+  labels: ['research'],
+  path: 'library/research',
+});
+
+// Update a library file
+await client.library.files.update({
+  fileId: libraryFile.fileId,
+  labels: ['research', 'academic', 'updated'],
+  path: 'library/research/updated-papers',
+});
+
+// Delete a library file
+await client.library.files.delete(libraryFile.fileId);
+```
 
 ## Configuration
 

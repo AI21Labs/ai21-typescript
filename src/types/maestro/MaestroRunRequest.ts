@@ -40,13 +40,13 @@ export type MaestroToolResources = {
 
 type MaestroRunFirstPartyModel = 'jamba-mini' | 'jamba-large';
 
-type MaestroRunManagedThirdPartyModel = 'gpt-4o' | 'mistral-7b' | 'mistral-8x7b' | 'mistral-small';
+type MaestroRunManagedThirdPartyModel = string;
 
 type MaestroRunModel = MaestroRunFirstPartyModel | MaestroRunManagedThirdPartyModel;
 
 type MaestroRunBudget = 'low' | 'medium' | 'high';
 
-type MaestroRunIncludeFields = 'data_sources' | 'requirements_result';
+type MaestroRunIncludeFields = 'data_sources' | 'requirements_result' | string;
 
 type MaestroRunResponseLanguage =
   | 'arabic'
@@ -57,7 +57,8 @@ type MaestroRunResponseLanguage =
   | 'hebrew'
   | 'italian'
   | 'portuguese'
-  | 'spanish';
+  | 'spanish'
+  | string;
 
 export interface MaestroRunRequest {
   /* 
@@ -66,7 +67,6 @@ export interface MaestroRunRequest {
   input: MaestroRunInput;
   /* 
   The requirements for the maestro run. Maximum 10 requirements.
-  Works only if no tools are selected.
   */
   requirements?: MaestroRunRequirement[];
   /* 

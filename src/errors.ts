@@ -11,3 +11,9 @@ export class StreamingDecodeError extends Error {
     super(`Failed to decode chunk: ${chunk}`);
   }
 }
+
+export class TimeoutError extends Error {
+  constructor(message: string, timeout: number) {
+    super(`Timeout: ${message} timed out after ${timeout}ms`);
+  }
+}

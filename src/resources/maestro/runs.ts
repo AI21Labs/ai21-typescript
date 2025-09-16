@@ -1,9 +1,9 @@
+import { TimeoutError } from '../../errors';
 import { APIResource } from '../../APIResource';
 import { MaestroRunRequest, MaestroRunResponse, RequestOptions, MaestroRunRequestOptions } from '../../types';
+import { DEFAULT_INTERVAL, DEFAULT_TIMEOUT } from '../../Constants';
 
 const MAESTRO_PATH = '/maestro/runs';
-const DEFAULT_TIMEOUT = 30000;
-const DEFAULT_INTERVAL = 1000;
 
 export class Runs extends APIResource {
   async create(body: MaestroRunRequest): Promise<MaestroRunResponse> {
@@ -38,7 +38,7 @@ export class Runs extends APIResource {
       await new Promise((resolve) => setTimeout(resolve, interval));
     }
 
-    throw new Error(`Maestro run ${runId} timed out after ${timeout}ms`);
+    throw new TimeoutError(`Maestro run ${runId}`, timeout);
   }
 
   async create_and_poll(
