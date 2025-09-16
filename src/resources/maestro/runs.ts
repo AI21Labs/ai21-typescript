@@ -41,7 +41,7 @@ export class Runs extends APIResource {
     throw new TimeoutError(`Maestro run ${runId}`, timeout);
   }
 
-  async create_and_poll(
+  async createAndPoll(
     body: MaestroRunRequest,
     options?: MaestroRunRequestOptions,
   ): Promise<MaestroRunResponse> {

@@ -134,10 +134,10 @@ console.log(result);
 
 ### Create and Poll (Recommended)
 
-For convenience, you can use `create_and_poll()` which automatically waits for completion:
+For convenience, you can use `createAndPoll()` which automatically waits for completion:
 
 ```typescript
-const result = await client.beta.maestro.runs.create_and_poll(
+const result = await client.beta.maestro.runs.createAndPoll(
   {
     input: 'Write a comprehensive report on AI trends in 2024',
     tools: ['web_search'],
@@ -157,7 +157,7 @@ console.log(result.result);
 Maestro supports various advanced configurations:
 
 ```typescript
-const advancedRun = await client.beta.maestro.runs.create_and_poll({
+const advancedRun = await client.beta.maestro.runs.createAndPoll({
   input: 'Research sustainable energy solutions',
 
   // Specify tools to use

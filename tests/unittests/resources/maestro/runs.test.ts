@@ -67,7 +67,33 @@ describe('Maestro Runs', () => {
           },
           { name: 'completeness', description: 'Cover all major areas', isMandatory: false },
         ],
-        tools: ['web_search', 'file_search'],
+        tools: [
+          { type: 'web_search', urls: ['https://arxiv.org', 'https://openai.com'] },
+          { type: 'file_search', file_ids: ['file_123', 'file_456'], labels: ['ai', 'ml', 'nlp'] },
+          {
+            type: 'http',
+            function: {
+              name: 'get_weather',
+              description: 'Get the weather for a given city',
+              parameters: {
+                type: 'object',
+                properties: { city: { type: 'string', description: 'The city to get the weather for' } },
+                required: ['city'],
+              },
+            },
+            endpoint: {
+              url: 'https://api.openweathermap.org/data/2.5/weather',
+              headers: { Authorization: 'Bearer 1234567890' },
+            },
+          },
+          {
+            type: 'mcp',
+            server_label: 'openai',
+            server_url: 'https://my-mcp-server.com',
+            headers: { Authorization: 'Bearer 1234567890' },
+            allowed_tools: ['get_weather'],
+          },
+        ],
         tool_resources: {
           file_search: {
             file_ids: ['file_123', 'file_456'],
@@ -174,7 +200,7 @@ describe('Maestro Runs', () => {
     });
   });
 
-  describe('create_and_poll', () => {
+  describe('createAndPoll', () => {
     it('should create and poll until completion with default options', async () => {
       const body: Models.MaestroRunRequest = {
         input: 'Test input',
@@ -199,7 +225,7 @@ describe('Maestro Runs', () => {
       mockClient.post.mockResolvedValue(createResponse);
       mockClient.get.mockResolvedValue(completedResponse);
 
-      const response = await runs.create_and_poll(body);
+      const response = await runs.createAndPoll(body);
 
       expect(mockClient.post).toHaveBeenCalledWith('/maestro/runs', { body });
       expect(mockClient.get).toHaveBeenCalledWith('/maestro/runs/run_123');
@@ -235,14 +261,14 @@ describe('Maestro Runs', () => {
       mockClient.post.mockResolvedValue(createResponse);
       mockClient.get.mockResolvedValue(completedResponse);
 
-      const response = await runs.create_and_poll(body, options);
+      const response = await runs.createAndPoll(body, options);
 
       expect(mockClient.post).toHaveBeenCalledWith('/maestro/runs', { body });
       expect(mockClient.get).toHaveBeenCalledWith('/maestro/runs/run_123');
       expect(response).toEqual(completedResponse);
     });
 
-    it('should call create_and_poll with correct parameters', async () => {
+    it('should call createAndPoll with correct parameters', async () => {
       const body: Models.MaestroRunRequest = {
         input: 'Test input',
       };
@@ -271,7 +297,7 @@ describe('Maestro Runs', () => {
       mockClient.post.mockResolvedValue(createResponse);
       mockClient.get.mockResolvedValue(completedResponse);
 
-      const response = await runs.create_and_poll(body, options);
+      const response = await runs.createAndPoll(body, options);
 
       expect(mockClient.post).toHaveBeenCalledWith('/maestro/runs', { body });
       expect(mockClient.get).toHaveBeenCalledWith('/maestro/runs/run_123');
@@ -286,7 +312,7 @@ describe('Maestro Runs', () => {
       const error = new AI21Error();
       mockClient.post.mockRejectedValue(error);
 
-      await expect(runs.create_and_poll(body)).rejects.toThrow();
+      await expect(runs.createAndPoll(body)).rejects.toThrow();
     });
 
     it('should handle polling errors', async () => {
@@ -306,7 +332,7 @@ describe('Maestro Runs', () => {
       mockClient.post.mockResolvedValue(createResponse);
       mockClient.get.mockRejectedValue(error);
 
-      await expect(runs.create_and_poll(body)).rejects.toThrow();
+      await expect(runs.createAndPoll(body)).rejects.toThrow();
     });
   });
 

@@ -6,7 +6,7 @@ const INTERVAL = 1500;
 async function main() {
   const client = new AI21({ apiKey: process.env.AI21_API_KEY });
 
-  const response = await client.beta.maestro.runs.create_and_poll(
+  const response = await client.beta.maestro.runs.createAndPoll(
     {
       input: 'Write a poem about the ocean',
       requirements: [

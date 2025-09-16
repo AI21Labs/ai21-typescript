@@ -1,3 +1,5 @@
+import { FileSearchTool, HttpTool, MCPTool, WebSearchTool } from './MaestroTools';
+
 type MaestroRunInputObject = {
   role: string;
   content: string;
@@ -11,7 +13,7 @@ type MaestroRunRequirement = {
   isMandatory?: boolean;
 };
 
-type MaestroRunTool = 'file_search' | 'web_search';
+type MaestroRunTool = HttpTool | MCPTool | FileSearchTool | WebSearchTool;
 
 export type MaestroToolResources = {
   /* 
