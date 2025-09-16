@@ -30,7 +30,7 @@ describe('Completions', () => {
 
   it('should create a non-streaming completion when stream is false', async () => {
     const body: Models.ChatCompletionCreateParamsNonStreaming = { 
-        model: "jamba-1.5-mini",
+        model: "jamba-mini",
         messages: [{role: "user", content: "Hello"}],
     };
     const options: Models.RequestOptions = { headers: { 'Authorization': `Bearer ${dummyAPIKey}` } };
@@ -58,7 +58,7 @@ describe('Completions', () => {
   });
 
   it('should create a streaming completion when stream is true', async () => {
-    const body: Models.ChatCompletionCreateParamsStreaming = { model: "jamba-1.5-mini", messages: [{role: "user", content: "Hello"}], stream: true };
+    const body: Models.ChatCompletionCreateParamsStreaming = { model: "jamba-mini", messages: [{role: "user", content: "Hello"}], stream: true };
     const options: Models.RequestOptions = { headers: { 'Authorization': `Bearer ${dummyAPIKey}` } };
     const expectedStream: Models.ChatCompletionChunk = {
         id: "test-id",
@@ -85,7 +85,7 @@ describe('Completions', () => {
   });
 
   it('should use default options when options parameter is omitted', async () => {
-    const body: Models.ChatCompletionCreateParamsNonStreaming = { model: "jamba-1.5-mini", messages: [{role: "user", content: "Hello"}], stream: false };
+    const body: Models.ChatCompletionCreateParamsNonStreaming = { model: "jamba-mini", messages: [{role: "user", content: "Hello"}], stream: false };
     const expectedResponse: Models.ChatCompletionResponse = {
         id: "test-id",
         usage: {
@@ -108,7 +108,7 @@ describe('Completions', () => {
   });
 
   it('should handle errors thrown by the API client', async () => {
-    const body: Models.ChatCompletionCreateParamsNonStreaming = { model: "jamba-1.5-mini", messages: [{role: "user", content: "Hello"}], stream: false };
+    const body: Models.ChatCompletionCreateParamsNonStreaming = { model: "jamba-mini", messages: [{role: "user", content: "Hello"}], stream: false };
     const error = new AI21Error();
 
     mockClient.post.mockRejectedValue(error);

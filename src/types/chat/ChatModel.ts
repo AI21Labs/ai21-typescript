@@ -4,6 +4,4 @@ export type ChatModel =
   | 'jamba-large-1.6-2025-03'
   | 'jamba-mini-1.6-2025-03'
   | 'jamba-large-1.6'
-  | 'jamba-mini-1.6'
-  | 'jamba-1.5-mini'
-  | 'jamba-1.5-large';
+  | 'jamba-mini-1.6';
