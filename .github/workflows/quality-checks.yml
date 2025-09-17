@@ -6,6 +6,7 @@ concurrency:
   cancel-in-progress: true
 on:
   pull_request:
+  push:
 jobs:
   quality-checks:
     runs-on: ubuntu-20.04
@@ -19,11 +20,9 @@ jobs:
         with:
           node-version: 20.18.0
           cache: 'npm'
-    
+
       - name: Install dependencies
         run: npm install
-      
+
       - name: Run quality checks
         run: npm run quality
-
-      
