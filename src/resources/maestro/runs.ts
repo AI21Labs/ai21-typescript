@@ -4,6 +4,7 @@ import { MaestroRunRequest, MaestroRunResponse, RequestOptions, MaestroRunReques
 import { DEFAULT_INTERVAL, DEFAULT_TIMEOUT } from '../../Constants';
 
 const MAESTRO_PATH = '/maestro/runs';
+const MAESTRO_TERMINATED_RUN_STATUSES = ['completed', 'failed', 'requires_action'];
 
 export class Runs extends APIResource {
   async create(body: MaestroRunRequest): Promise<MaestroRunResponse> {
@@ -31,7 +32,7 @@ export class Runs extends APIResource {
 
     while (Date.now() - startTime < timeout) {
       const response = await this.get(runId);
-      if (response.status === 'completed') {
+      if (MAESTRO_TERMINATED_RUN_STATUSES.includes(response.status)) {
         return response;
       }
 

@@ -15,31 +15,6 @@ type MaestroRunRequirement = {
 
 type MaestroRunTool = HttpTool | MCPTool | FileSearchTool | WebSearchTool;
 
-export type MaestroToolResources = {
-  /* 
-  When provided, this object defines filters that AI21 Maestro will apply whenever it performs a file search.
-  */
-  file_search?: {
-    /* 
-    Restrict file search to these file IDs.
-    */
-    file_ids?: string[];
-    /* 
-    Restrict file search to files with these labels.
-    */
-    labels?: string[];
-  };
-  /* 
-  When provided, this object defines filters that AI21 Maestro will apply whenever it performs a web search.
-  */
-  web_search?: {
-    /* 
-    Restrict web search to the specified URL prefixes.
-    */
-    urls: string[];
-  };
-};
-
 type MaestroRunFirstPartyModel = 'jamba-mini' | 'jamba-large';
 
 type MaestroRunManagedThirdPartyModel = string;
@@ -50,7 +25,7 @@ type MaestroRunBudget = 'low' | 'medium' | 'high';
 
 type MaestroRunIncludeFields = 'data_sources' | 'requirements_result' | string;
 
-type MaestroRunResponseLanguage =
+export type MaestroRunResponseLanguage =
   | 'arabic'
   | 'dutch'
   | 'english'
@@ -60,6 +35,7 @@ type MaestroRunResponseLanguage =
   | 'italian'
   | 'portuguese'
   | 'spanish'
+  | 'unset'
   | string;
 
 export interface MaestroRunRequest {
@@ -75,10 +51,6 @@ export interface MaestroRunRequest {
   Tools for the maestro run.
   */
   tools?: MaestroRunTool[];
-  /* 
-  A set of resources used by AI21 Maestro’s tools.
-  */
-  tool_resources?: MaestroToolResources;
   /* 
   The models to use for the maestro run.
   */

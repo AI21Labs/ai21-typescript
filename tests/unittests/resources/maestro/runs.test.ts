@@ -94,15 +94,6 @@ describe('Maestro Runs', () => {
             allowed_tools: ['get_weather'],
           },
         ],
-        tool_resources: {
-          file_search: {
-            file_ids: ['file_123', 'file_456'],
-            labels: ['ai', 'ml', 'nlp'],
-          },
-          web_search: {
-            urls: ['https://arxiv.org', 'https://openai.com'],
-          },
-        },
         models: ['jamba-large', 'gpt-4o'],
         budget: 'high',
         include: ['data_sources', 'requirements_result'],
@@ -115,10 +106,12 @@ describe('Maestro Runs', () => {
         result: null,
         data_sources: {
           file_search: {
+            type: 'file_search',
             file_ids: ['file_123', 'file_456'],
             labels: ['ai', 'ml', 'nlp'],
           },
           web_search: {
+            type: 'web_search',
             urls: ['https://arxiv.org', 'https://openai.com'],
           },
         },
@@ -165,6 +158,7 @@ describe('Maestro Runs', () => {
         result: 'Here is a comprehensive summary of the latest AI developments...',
         data_sources: {
           web_search: {
+            type: 'web_search',
             urls: ['https://arxiv.org', 'https://openai.com'],
           },
         },

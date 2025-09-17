@@ -37,8 +37,13 @@ export interface MCPTool {
 
 export interface FileSearchTool {
   type: 'file_search';
-  file_ids?: string[];
+  retrieval_similarity_threshold?: number;
   labels?: string[];
+  labels_filter_mode?: 'AND' | 'OR';
+  labels_filter?: Record<string, unknown>;
+  file_ids?: string[];
+  retrieval_strategy?: string;
+  max_neighbors?: number;
 }
 
 export interface WebSearchTool {

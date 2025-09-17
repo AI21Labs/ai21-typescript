@@ -1,6 +1,6 @@
-import { MaestroToolResources } from './MaestroRunRequest';
+import { FileSearchTool, WebSearchTool } from './MaestroTools';
 
-type MaestroRunResponseStatus = 'completed' | 'failed' | 'in_progress';
+type MaestroRunResponseStatus = 'completed' | 'failed' | 'in_progress' | 'requires_action';
 
 type MaestroRunRequirementResult = {
   score: number;
@@ -11,6 +11,11 @@ type MaestroRunRequirementResult = {
     score: number | null;
     reason: string | null;
   };
+};
+
+type DataSources = {
+  file_search?: FileSearchTool;
+  web_search?: WebSearchTool;
 };
 
 export interface MaestroRunResponse {
@@ -26,7 +31,7 @@ export interface MaestroRunResponse {
   /* 
   Specifies the data sources used to retrieve contextual information for a run.
   */
-  data_sources: MaestroToolResources;
+  data_sources: DataSources;
   /* 
   Detailed results for each requirement.
   */
