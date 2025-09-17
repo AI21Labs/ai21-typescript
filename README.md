@@ -140,7 +140,7 @@ For convenience, you can use `createAndPoll()` which automatically waits for com
 const result = await client.beta.maestro.runs.createAndPoll(
   {
     input: 'Write a comprehensive report on AI trends in 2024',
-    tools: ['web_search'],
+    tools: [{ type: 'web_search' }],
     budget: 'medium',
   },
   {
@@ -161,18 +161,17 @@ const advancedRun = await client.beta.maestro.runs.createAndPoll({
   input: 'Research sustainable energy solutions',
 
   // Specify tools to use
-  tools: ['web_search', 'file_search'],
-
-  // Configure tool resources
-  tool_resources: {
-    web_search: {
+  tools: [
+    {
+      type: 'web_search',
       urls: ['https://example.com', 'https://research.org'],
     },
-    file_search: {
+    {
+      type: 'file_search',
       file_ids: ['file-123', 'file-456'],
       labels: ['research', 'energy'],
     },
-  },
+  ],
 
   // Define specific requirements
   requirements: [
@@ -212,35 +211,13 @@ const structuredRun = await client.beta.maestro.runs.create({
     { role: 'system', content: 'You are a research assistant specializing in technology trends.' },
     { role: 'user', content: 'What are the emerging AI technologies in healthcare?' },
   ],
-  tools: ['web_search'],
+  tools: [{ type: 'web_search' }],
 });
 ```
 
 ---
 
-### Files
-
-The `AI21` class provides a `files` property that gives you access to the Files API. You can use it to upload, retrieve, update, list, and delete files.
-
-```typescript
-import { AI21 } from 'ai21';
-
-const client = new AI21({
-  apiKey: process.env.AI21_API_KEY, // or pass it in directly
-});
-
-const fileUploadResponse = await client.files.create({
-  file: './articles/article1.pdf',
-  labels: ['science', 'biology'],
-  path: 'virtual-path/to/science-articles',
-});
-
-const file = await client.files.get(fileUploadResponse.fileId);
-```
-
----
-
-### Conversational-RAG
+## Conversational RAG (Beta)
 
 The `AI21` class provides a `conversationalRag` property that gives you access to the Conversational RAG API. You can use it to ask questions that are answered based on the files you uploaded.
 
