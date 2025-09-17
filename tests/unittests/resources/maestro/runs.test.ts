@@ -30,6 +30,19 @@ describe('Maestro Runs', () => {
     jest.useRealTimers();
   });
 
+  const defaultRequirementsResult = {
+    score: 0,
+    finish_reason: null,
+    requirements: [
+      {
+        name: 'accuracy',
+        description: 'Information should be accurate and up-to-date',
+        score: 0,
+        reason: 'All sources are recent and credible',
+      },
+    ],
+  };
+
   describe('create', () => {
     it('should create a maestro run with minimal required fields', async () => {
       const body: Models.MaestroRunRequest = {
@@ -41,7 +54,7 @@ describe('Maestro Runs', () => {
         status: 'in_progress',
         result: null,
         data_sources: {},
-        requirements_result: [],
+        requirements_result: defaultRequirementsResult,
       };
 
       mockClient.post.mockResolvedValue(expectedResponse);
@@ -105,28 +118,40 @@ describe('Maestro Runs', () => {
         status: 'in_progress',
         result: null,
         data_sources: {
-          file_search: {
-            type: 'file_search',
-            file_ids: ['file_123', 'file_456'],
-            labels: ['ai', 'ml', 'nlp'],
-          },
-          web_search: {
-            type: 'web_search',
-            urls: ['https://arxiv.org', 'https://openai.com'],
-          },
+          file_search: [
+            {
+              file_id: 'file_123',
+              file_name: 'file_123.txt',
+              score: 0.92,
+              order: 1,
+            },
+            {
+              file_id: 'file_456',
+              file_name: 'file_456.txt',
+              score: 0.92,
+              order: 2,
+            },
+          ],
+          web_search: [
+            {
+              url: 'https://arxiv.org',
+              score: 0.92,
+              text: 'Here is a comprehensive summary of the latest AI developments...',
+            },
+          ],
         },
-        requirements_result: [
-          {
-            score: 0.95,
-            finish_reason: 'completed',
-            requirements: {
+        requirements_result: {
+          score: 0.95,
+          finish_reason: 'completed',
+          requirements: [
+            {
               name: 'accuracy',
               description: 'Information should be accurate and up-to-date',
               score: 0.95,
               reason: 'All sources are recent and credible',
             },
-          },
-        ],
+          ],
+        },
       };
 
       mockClient.post.mockResolvedValue(expectedResponse);
@@ -157,23 +182,26 @@ describe('Maestro Runs', () => {
         status: 'completed',
         result: 'Here is a comprehensive summary of the latest AI developments...',
         data_sources: {
-          web_search: {
-            type: 'web_search',
-            urls: ['https://arxiv.org', 'https://openai.com'],
-          },
+          web_search: [
+            {
+              score: 0.92,
+              text: 'Here is a comprehensive summary of the latest AI developments...',
+              url: 'https://arxiv.org',
+            },
+          ],
         },
-        requirements_result: [
-          {
-            score: 0.92,
-            finish_reason: 'completed',
-            requirements: {
+        requirements_result: {
+          score: 0.92,
+          finish_reason: 'completed',
+          requirements: [
+            {
               name: 'accuracy',
               description: 'Information should be accurate and up-to-date',
               score: 0.92,
               reason: 'Sources are recent but some claims need verification',
             },
-          },
-        ],
+          ],
+        },
       };
 
       mockClient.get.mockResolvedValue(expectedResponse);
@@ -205,7 +233,7 @@ describe('Maestro Runs', () => {
         status: 'in_progress',
         result: null,
         data_sources: {},
-        requirements_result: [],
+        requirements_result: defaultRequirementsResult,
       };
 
       const completedResponse: Models.MaestroRunResponse = {
@@ -213,7 +241,7 @@ describe('Maestro Runs', () => {
         status: 'completed',
         result: 'Task completed successfully',
         data_sources: {},
-        requirements_result: [],
+        requirements_result: defaultRequirementsResult,
       };
 
       mockClient.post.mockResolvedValue(createResponse);
@@ -241,7 +269,7 @@ describe('Maestro Runs', () => {
         status: 'in_progress',
         result: null,
         data_sources: {},
-        requirements_result: [],
+        requirements_result: defaultRequirementsResult,
       };
 
       const completedResponse: Models.MaestroRunResponse = {
@@ -249,7 +277,7 @@ describe('Maestro Runs', () => {
         status: 'completed',
         result: 'Task completed successfully',
         data_sources: {},
-        requirements_result: [],
+        requirements_result: defaultRequirementsResult,
       };
 
       mockClient.post.mockResolvedValue(createResponse);
@@ -277,7 +305,7 @@ describe('Maestro Runs', () => {
         status: 'in_progress',
         result: null,
         data_sources: {},
-        requirements_result: [],
+        requirements_result: defaultRequirementsResult,
       };
 
       const completedResponse: Models.MaestroRunResponse = {
@@ -285,7 +313,7 @@ describe('Maestro Runs', () => {
         status: 'completed',
         result: 'Task completed successfully',
         data_sources: {},
-        requirements_result: [],
+        requirements_result: defaultRequirementsResult,
       };
 
       mockClient.post.mockResolvedValue(createResponse);
@@ -319,7 +347,7 @@ describe('Maestro Runs', () => {
         status: 'in_progress',
         result: null,
         data_sources: {},
-        requirements_result: [],
+        requirements_result: defaultRequirementsResult,
       };
 
       const error = new AI21Error();
@@ -341,7 +369,7 @@ describe('Maestro Runs', () => {
         status: 'completed',
         result: 'Response to string input',
         data_sources: {},
-        requirements_result: [],
+        requirements_result: defaultRequirementsResult,
       };
 
       mockClient.post.mockResolvedValue(expectedResponse);
@@ -365,7 +393,7 @@ describe('Maestro Runs', () => {
         status: 'completed',
         result: 'Response to array input',
         data_sources: {},
-        requirements_result: [],
+        requirements_result: defaultRequirementsResult,
       };
 
       mockClient.post.mockResolvedValue(expectedResponse);

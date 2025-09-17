@@ -1,21 +1,35 @@
-import { FileSearchTool, WebSearchTool } from './MaestroTools';
-
 type MaestroRunResponseStatus = 'completed' | 'failed' | 'in_progress' | 'requires_action';
+
+export type MaestroRunRequirement = {
+  name: string;
+  description: string;
+  score: number;
+  reason: string;
+};
 
 type MaestroRunRequirementResult = {
   score: number;
   finish_reason: string | null;
-  requirements: {
-    name: string | null;
-    description: string | null;
-    score: number | null;
-    reason: string | null;
-  };
+  requirements: MaestroRunRequirement[];
+};
+
+type FileSearchResult = {
+  text?: string;
+  file_id: string;
+  file_name: string;
+  score: number;
+  order: number;
+};
+
+type WebSearchResult = {
+  url: string;
+  score: number;
+  text: string;
 };
 
 type DataSources = {
-  file_search?: FileSearchTool;
-  web_search?: WebSearchTool;
+  file_search?: FileSearchResult[];
+  web_search?: WebSearchResult[];
 };
 
 export interface MaestroRunResponse {
@@ -35,5 +49,5 @@ export interface MaestroRunResponse {
   /* 
   Detailed results for each requirement.
   */
-  requirements_result: MaestroRunRequirementResult[];
+  requirements_result: MaestroRunRequirementResult;
 }

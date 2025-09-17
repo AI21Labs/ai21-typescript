@@ -44,10 +44,13 @@ export {
   type ListFilesFilters,
   type UpdateFileRequest,
   type FilePathOrFileObject,
+  type MaestroRunRequest,
+  type MaestroRunResponse,
+  type MaestroRunRequestOptions,
 } from './types';
 export { APIClient } from './APIClient';
 export { AI21Error, MissingAPIKeyError } from './errors';
 export { Stream } from './streaming';
 export { APIResource } from './APIResource';
-export { Chat, Completions, ConversationalRag, Library } from './resources';
+export { Chat, Completions, ConversationalRag, Library, Maestro } from './resources';
 export { isBrowser, isNode } from './runtime';
